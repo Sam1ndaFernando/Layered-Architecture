@@ -7,8 +7,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CrudUtill {
-    public PreparedStatement getPreparedStatement (String sql, Object...args) throws SQLException, ClassNotFoundException {
+public class CrudUtil {
+    public static PreparedStatement getPreparedStatement(String sql, Object... args) throws SQLException, ClassNotFoundException {
 
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement(sql);
@@ -19,12 +19,12 @@ public class CrudUtill {
         return pstm;
     }
 
-    public boolean executeUpdate (String sql, Object...args) throws SQLException, ClassNotFoundException {
+    public static boolean executeUpdate (String sql, Object...args) throws SQLException, ClassNotFoundException {
         PreparedStatement pstm = getPreparedStatement(sql, args);
         return pstm.executeUpdate()>0;
     }
 
-    public ResultSet executeQuarry (String sql, Object...args) throws SQLException, ClassNotFoundException{
+    public static ResultSet executeQuarry (String sql, Object...args) throws SQLException, ClassNotFoundException{
         PreparedStatement pstm = getPreparedStatement(sql, args);
         return pstm.executeQuery();
     }
