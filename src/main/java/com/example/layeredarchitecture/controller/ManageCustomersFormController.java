@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class ManageCustomersFormController {
@@ -76,7 +78,7 @@ public class ManageCustomersFormController {
 //            }
 
 
-            ArrayList<CustomerDTO> allCistomers = customerDAO.getAllCistomers();
+            ArrayList<CustomerDTO> allCistomers = customerDAO.getAll();
 
             for (CustomerDTO customerDto : allCistomers) {
                 tblCustomers.getItems().add(new CustomerTM(customerDto.getId(),customerDto.getName(),customerDto.getAddress()));
@@ -158,7 +160,7 @@ public class ManageCustomersFormController {
 //                pstm.executeUpdate();
 
                 CustomerDTO customerDTO = new CustomerDTO(id, name, address);
-                customerDAO.saveCustomer(customerDTO);
+                customerDAO.save(customerDTO);
 
                 tblCustomers.getItems().add(new CustomerTM(id, name, address));
             } catch (SQLException e) {
@@ -182,7 +184,7 @@ public class ManageCustomersFormController {
 //                pstm.executeUpdate();
 
                 CustomerDTO customerDTO = new CustomerDTO(id, name, address);
-                customerDAO.updateCustomer(customerDTO);
+                customerDAO.update(customerDTO);
 
             } catch (SQLException e) {
                 new Alert(Alert.AlertType.ERROR, "Failed to update the customer " + id + e.getMessage()).show();
@@ -206,7 +208,7 @@ public class ManageCustomersFormController {
 //        pstm.setString(1, id);
 //        return pstm.executeQuery().next();
 
-        return customerDAO.existCustomer(id);
+        return customerDAO.exist(id);
     }
 
 
@@ -222,7 +224,7 @@ public class ManageCustomersFormController {
 //            pstm.setString(1, id);
 //            pstm.executeUpdate();
 
-            customerDAO.deleteCustomer(id);
+            customerDAO.delete(id);
 
             tblCustomers.getItems().remove(tblCustomers.getSelectionModel().getSelectedItem());
             tblCustomers.getSelectionModel().clearSelection();
@@ -266,11 +268,10 @@ public class ManageCustomersFormController {
     }
 
     private String getLastCustomerId() {
-//        List<CustomerTM> tempCustomersList = new ArrayList<>(tblCustomers.getItems());
-//        Collections.sort(tempCustomersList);
-//        return tempCustomersList.get(tempCustomersList.size() - 1).getId();
+        List<CustomerTM> tempCustomersList = new ArrayList<>(tblCustomers.getItems());
+        Collections.sort(tempCustomersList);
+        return tempCustomersList.get(tempCustomersList.size() - 1).getId();
 
-        return customerDAO.ganarateLastCustomerID(tblCustomers);
     }
 
 }

@@ -80,7 +80,7 @@ public class ManageItemsFormController {
 //                tblItems.getItems().add(new ItemTM(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand")));
 //            }
 
-            ArrayList<ItemDTO> AllItems = itemDao.getAllItems();
+            ArrayList<ItemDTO> AllItems = itemDao.getAll();
 
             for (ItemDTO itemDto: AllItems) {
                 tblItems.getItems().add(new ItemTM(itemDto.getCode(),itemDto.getDescription(),itemDto.getUnitPrice(),itemDto.getQtyOnHand()));
@@ -147,7 +147,7 @@ public class ManageItemsFormController {
 //            pstm.setString(1, code);
 //            pstm.executeUpdate();
 
-            itemDao.deleteItem(code);
+            itemDao.delete(code);
 
             tblItems.getItems().remove(tblItems.getSelectionModel().getSelectedItem());
             tblItems.getSelectionModel().clearSelection();
@@ -196,11 +196,12 @@ public class ManageItemsFormController {
 //                pstm.executeUpdate();
 
                 ItemDTO itemDTO = new ItemDTO(code, description, unitPrice, qtyOnHand);
-                itemDao.SaveItem(itemDTO);
+                itemDao.save(itemDTO);
 
                 tblItems.getItems().add(new ItemTM(code, description, unitPrice, qtyOnHand));
 
             } catch (SQLException e) {
+                e.printStackTrace();
                 new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -221,7 +222,7 @@ public class ManageItemsFormController {
 //                pstm.executeUpdate();
 
                 ItemDTO itemDTO = new ItemDTO(code, description, unitPrice, qtyOnHand);
-                itemDao.updateItems(itemDTO);
+                itemDao.update(itemDTO);
 
                 ItemTM selectedItem = tblItems.getSelectionModel().getSelectedItem();
                 selectedItem.setDescription(description);
@@ -245,7 +246,7 @@ public class ManageItemsFormController {
 //        pstm.setString(1, code);
 //        return pstm.executeQuery().next();
 
-        return itemDao.existItem(code);
+        return itemDao.exist(code);
     }
 
 
@@ -261,7 +262,7 @@ public class ManageItemsFormController {
 //                return "I00-001";
 //            }
 
-           return itemDao.ganarateNewId(tblItems);
+           return itemDao.ganarateNewId();
 
         } catch (SQLException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).show();
